@@ -1,0 +1,348 @@
+/* @font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/poppins/v24/pxiEyp8kv8JHgFVrJJbecnFHGPezSQ.woff2) format('woff2');
+    unicode-range: U +0900 -097F, U +1CD0 -1CF9, U +200C -200D, U +20A8, U +20B9, U +20F0, U +25CC, U + A830-A839, U + A8E0-A8FF, U +11B00 -11B09;
+} */
+
+:root{
+    --color-blue-mico: rgb(0, 49, 61)
+}
+
+html, body{
+    height: 100dvh;
+    margin: 0;
+
+}
+
+body{
+    font-family: Poppins, Roboto, "Helvetica Neue", Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+header{
+    background-color: var(--color-blue-mico);
+    padding-block: 20px;
+
+    .logo{
+        width: 100%;
+        height: 100px;
+        background-image: url(./assets/logo/mico2026-emblem-oly-white.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+}
+
+.view{
+    display: none !important;
+
+    &.displayed{
+        display: flex !important;
+    }
+}
+
+.list-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    /* width: 400px; */
+    width: 100%;
+    margin: 0 auto;
+    /* border: 2px solid grey; */
+    /* border-radius: 20px; */
+    overflow: hidden;
+
+    .medals-header{
+        .gold, .silver, .bronze{
+            font-size: 20px
+        }
+    }
+
+    .gold, .silver, .bronze {
+        font-size: 18px;
+        font-weight: bold;
+        width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .gold {
+        color: gold;
+    }
+
+    .silver {
+        color: silver;
+    }
+
+    .bronze {
+        color: peru;
+    }
+
+    .medals-list {
+        flex: 1;
+        overflow-y: scroll;
+
+        .item {
+            display: grid;
+            grid-template-columns: auto 1fr repeat(3, auto);
+            gap: 6px;
+            padding: 6px 10px;
+            align-items: center;
+
+            .country {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                
+                img{
+                    border-radius: 2px;
+                }
+            }
+
+            .rank {
+                font-weight: bold;
+                width: 16px;
+                text-align: right;
+                margin-right: 4px;
+            }
+        }
+    }
+}
+
+.medals-header {
+  font-size: 24px;
+  font-weight: bold;
+  display: grid;
+  grid-template-columns: 1fr repeat(3, auto);
+  gap: 6px;
+
+  padding: 10px;
+  background-color: var(--color-blue-mico);
+  color: white
+}
+
+.medals-details{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    .day-header{
+        color: var(--color-blue-mico);
+        padding-inline: 8px;
+        padding-block: 4px;
+        border-radius: 4px;
+        width: fit-content;
+        background-color: rgb(0 49 61 / 20%);
+        margin-left: 5px;
+        margin-top: 20px;
+
+        &:first-child{
+            margin-top: 10px;
+        }
+    }
+
+    .day-list{
+        display: flex;
+        flex-direction: column;
+        
+        .discipline-name{
+            font-size: 18px;
+            padding-left: 15px;
+            font-weight: 500;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            margin: 10px 0 4px;
+
+            .icon{
+                width: 30px;
+                height: 30px;
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
+        }
+
+        .some-medal{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 6px;
+            margin-left: 20px;
+
+            .medal-type{
+                font-size: 2rem;
+            }
+
+            .medal-informations{
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 3px;
+
+                .athlete{
+                    font-weight: 700;;
+                }
+            }
+        }
+
+        &:last-child{
+            margin-bottom: 20px;
+        }
+    }
+}
+
+.switcher-blur{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+    mask: linear-gradient(to top, white 40px, transparent 100%);
+    z-index: 1;
+    display: none;
+}
+
+.view-switcher{
+    background-color: #EEEEEE;
+    border-radius: 5px;
+    padding: 3px;
+    width: fit-content;
+    position: relative;
+    height: 30px;
+    display: flex;
+    margin-inline: auto;
+    margin-top: 20px;
+    box-shadow: 0px 0 4px 0 hsl(0deg 0% 0% / 20%), 0 4px 4px 0 hsl(0deg 0% 0% / 20%);
+    z-index: 2;
+
+    input[type=radio]{
+        display: none;
+    }
+
+    label{
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: center;
+        min-width: 150px;
+        width: 150px;
+        max-width: 150px;
+        text-align: center;
+        z-index: 2;
+        height: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &>span{
+
+            &.icon{
+                width: 20px;
+                height: 20px;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+
+            }
+        }
+
+        &[for=goto-ranking] .icon{
+            background-image: url(./assets/icons/switcher-ranking-blue.svg);
+        }
+
+        &[for=goto-medals] .icon{
+            background-image: url(./assets/icons/switcher-medals-blue.svg);
+        }
+    }
+
+    .switch-cursor{
+        background-color: var(--color-blue-mico);
+        border-radius: 3px;
+        z-index: 1;
+        position: absolute;
+        height: calc(100% - 6px);
+        width: 150px;
+        left: 3px;
+        top: 3px;
+        transition: all 0.3s ease;
+    }
+
+    input[type=radio]:checked + .radio-uri{
+        color: white;
+        
+        .icon{
+            background-image: url(./assets/icons/switcher-medals-white.svg);
+        }
+        
+        &~ .switch-cursor {
+            left: calc(150px + 3px)
+        }
+    }
+    input[type=radio]:checked + .radio-scrutation {
+        color: white;
+        
+        .icon{
+            background-image: url(./assets/icons/switcher-ranking-white.svg);
+        }
+
+        &~ .switch-cursor {
+            left: 3px;
+        }
+    }
+
+}
+
+body:has(input#goto-ranking[type=radio]:checked){
+    .view.list-container{
+        display: flex !important;
+    }
+    .view.medals-details{
+        display: none !important;
+    }
+}
+
+body:has(input#goto-medals[type=radio]:checked){
+    .view.list-container{
+        display: none !important;
+    }
+    .view.medals-details{
+        display: flex !important;
+    }
+}
+
+
+
+@media screen and (max-width: 768px) {
+    header .logo{
+        height: 60px;
+    }
+
+    .view-switcher{
+        position: fixed;
+        bottom: 10px;
+        left: calc(50% - (300px + 6px) / 2);
+        height: 40px;
+        margin-block: 0;
+
+        label{
+            height: 40px;
+        }
+    }
+
+    .switcher-blur{
+        display: block;
+    }
+
+    .medals-details, .medals-list{
+        padding-bottom: 60px;
+    }
+}

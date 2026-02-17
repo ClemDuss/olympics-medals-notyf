@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Médailles Olympiques</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./medalsRanking.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/svg" href="favicon.svg">
+    
+</head>
+<body>
+    <header>
+        <div class="logo"></div>
+
+        <div class="view-switcher">
+            <input id="goto-ranking" name="switch-config" type="radio" checked>
+            <label for="goto-ranking" class="radio-scrutation">
+                <span class="icon"></span>
+                <span>Classement</span>
+            </label>
+            <input id="goto-medals" name="switch-config" type="radio">
+            <label for="goto-medals" class="radio-uri">
+                <span class="icon"></span>
+                <span>Médailles</span>
+            </label>
+            <span class="switch-cursor"></span>
+        </div>
+
+    </header>
+    <div class="view displayed list-container">
+        <!-- <div class="medals-header">
+            <span>Classement</span>
+            <span class="gold">🥇</span>
+            <span class="silver">🥈</span>
+            <span class="bronze">🥉</span>
+        </div> -->
+        <div class="medals-list"></div>
+    </div>
+    <div class="view medals-details">
+        <div class="details-list"></div>
+    </div>
+
+    <div class="switcher-blur"></div>
+    
+    <script src="./medalRankingRenderer.js"></script>
+</body>
+</html>
