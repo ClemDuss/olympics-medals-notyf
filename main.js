@@ -13,6 +13,12 @@ function createWindow() {
         height: 600,
         x: screensize.width - 400 - 10, // 10px from the right edge
         y: screensize.height - 600 - 10, // 10px from the bottom edge
+        titleBarStyle: 'hidden',
+        titleBarOverlay: {
+            color: '#00313d',
+            symbolColor: '#74b1be',
+            height: 40
+        },
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
@@ -27,8 +33,8 @@ function createWindow() {
 
 app.whenReady().then(() => {
 
-    const trayIcon = nativeImage.createFromPath(path.join(__dirname, './assets/Vector.png'));
-
+    const trayIcon = nativeImage.createFromPath(path.join(__dirname, './assets/icon.ico'));
+console.log(trayIcon.isEmpty()) // true
     trayIcon.setTemplateImage(true);
 
     // tray = new Tray(nativeImage.createFromPath(path.join(__dirname, './assets/Vector.pdf')));
@@ -66,7 +72,14 @@ app.whenReady().then(() => {
         if (wins.length === 0) {
             createWindow()
         } else {
-            wins[0].focus()
+           if(wins[0].isMinimized()) {
+                wins[0].show()
+            }else if(wins[0].isFocused() || wins[0].isVisible()){ 
+                wins[0].hide()
+            }else{
+                wins[0].show()
+                wins[0].focus()
+            }
         }
     });
     
