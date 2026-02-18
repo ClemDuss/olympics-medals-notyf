@@ -4,12 +4,12 @@ const sharp = require("sharp");
 const { default: pngToIco } = require("png-to-ico");
 const png2icons = require("png2icons");
 
-// const sourceIcon = path.resolve(__dirname, "./assets/icon-1024.png");
-const sourceIcon = path.resolve(__dirname, "./icon-256.png");
+const sourceIcon = path.resolve(__dirname, "./icon-1024.png");
+// const sourceIcon = path.resolve(__dirname, "./icon-256.png");
 const outputDir = path.resolve(__dirname, "./icons");
 
-// const sizes = [16, 32, 48, 64, 128, 256, 512, 1024];
-const sizes = [16, 32, 48, 64, 128, 256];
+const sizes = [16, 32, 48, 64, 128, 256, 512, 1024];
+// const sizes = [16, 32, 48, 64, 128, 256];
 
 async function generatePNGVariants() {
   await fs.ensureDir(outputDir);
@@ -46,8 +46,8 @@ async function generateICO(pngPaths) {
 
 async function generateICNS() {
   const png1024 = await fs.readFile(
-    // path.join(outputDir, "icon-1024.png")
-    path.join(outputDir, "icon-256.png")
+    path.join(outputDir, "icon-1024.png")
+    // path.join(outputDir, "icon-256.png")
   );
 
   const icnsBuffer = png2icons.createICNS(

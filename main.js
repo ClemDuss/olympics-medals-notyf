@@ -1,6 +1,6 @@
 const { Menu } = require('electron');
 const { nativeImage } = require('electron/common');
-const { app, BrowserWindow, ipcMain, Tray } = require('electron/main');
+const { app, BrowserWindow, ipcMain, Tray, Notification } = require('electron/main');
 const path = require('node:path');
 
 let tray;
@@ -12,7 +12,7 @@ function createWindow() {
         width: 400,
         height: 600,
         x: screensize.width - 400 - 10, // 10px from the right edge
-        y: screensize.height - 600 - 10, // 10px from the bottom edge
+        y: (isMacOS() ? 40 : screensize.height - 600 - 10), // 10px from the bottom edge
         titleBarStyle: 'hidden',
         titleBarOverlay: {
             color: '#00313d',
@@ -22,18 +22,40 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
-        }
+        },
+        show: false,
+        resizable: false,
+        frame: false,
     });
 
     // win.setIcon(path.join(__dirname, 'assets/trayicon.png'));
-    win.setIcon(nativeImage.createFromPath(path.join(__dirname, './assets/trayicon.png')));
+    if(isMacOS()) {
+        win.setIcon(nativeImage.createFromPath(path.join(__dirname, './assets/icons/icon.icns')));
+    } else {
+        win.setIcon(nativeImage.createFromPath(path.join(__dirname, './assets/icons/icon.ico')));
+    }
 
     win.loadFile(path.join(__dirname, './views/medalsRanking/medalsRanking.html'));
+
+    win.on('close', (event) => {
+        // event.preventDefault();
+        win.hide();
+    });
 }  
 
 app.whenReady().then(() => {
 
-    const trayIcon = nativeImage.createFromPath(path.join(__dirname, './assets/icon.ico'));
+    let trayIconPath = '';
+
+    if(isMacOS()) {
+        trayIconPath = path.join(__dirname, './assets/trayTemplate.png');
+        app.dock.setIcon(nativeImage.createFromPath(path.join(__dirname, './assets/icon-1024.png')));
+        app.dock.hide();
+    } else {
+        trayIconPath = path.join(__dirname, './assets/icon.ico');
+    }
+    
+    const trayIcon = nativeImage.createFromPath(trayIconPath);
 console.log(trayIcon.isEmpty()) // true
     trayIcon.setTemplateImage(true);
 
@@ -57,33 +79,25 @@ console.log(trayIcon.isEmpty()) // true
             }
         },
         {
-            label: 'Quit',
+            label: 'Quitter',
             click: () => {
                 app.quit();
-            }
-        },
-        { role: 'quit' }
+            },
+            role: 'quit'
+        }
     ]);
 
-    tray.setToolTip('Médailles Olympiquer - Milan Cortina 2026');
+    tray.setToolTip('Médailles Olympiques - Milan Cortina 2026');
     tray.setContextMenu(contextMenu);
-    tray.on('click', () => {    
-        const wins = BrowserWindow.getAllWindows()
-        if (wins.length === 0) {
-            createWindow()
-        } else {
-           if(wins[0].isMinimized()) {
-                wins[0].show()
-            }else if(wins[0].isFocused() || wins[0].isVisible()){ 
-                wins[0].hide()
-            }else{
-                wins[0].show()
-                wins[0].focus()
-            }
-        }
+    tray.on('click', (e) => {    
+        showHideOrCreateWindow();
     });
     
     createWindow();
+
+    setTimeout(() => {
+        showNotification();
+    }, 5000);
 });
 
 app.on('window-all-closed', () => {
@@ -97,3 +111,31 @@ app.on('activate', () => {
         createWindow();
     }
 });
+
+
+
+function isMacOS() {
+  return typeof process !== 'undefined' &&
+         process.platform === 'darwin';
+}
+
+const showHideOrCreateWindow = () => {
+    const wins = BrowserWindow.getAllWindows()
+    if (wins.length === 0) {
+        createWindow()
+    } else {
+        if(wins[0].isMinimized()) {
+            wins[0].show()
+        }else if(wins[0].isFocused()){ 
+            wins[0].hide()
+        }else{
+            wins[0].show()
+            wins[0].focus()
+        }
+    }
+}
+
+
+function showNotification () {
+  new Notification({ title: 'hello', body: 'hihi' }).show()
+}

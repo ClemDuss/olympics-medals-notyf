@@ -118,9 +118,14 @@ document.addEventListener('DOMContentLoaded', function() {
             medalsList.appendChild(countryItem);
         });
     });
+    
+    new window.Notification('Notification de test', {
+        body: 'Ceci est une notification de test pour vérifier que les notifications fonctionnent correctement.',
+        icon: 'https://gstatic.olympics.com/s3/noc/oly/3x2/FRA.png'
+    } );
 });
 
 
 document.querySelector('header .logo').addEventListener('click', ()=>{
-    document.querySelectorAll('.view').forEach(view => view.classList.toggle('displayed'));
+    location.reload();  
 })
