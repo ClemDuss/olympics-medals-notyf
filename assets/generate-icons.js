@@ -4,7 +4,7 @@ const sharp = require("sharp");
 const { default: pngToIco } = require("png-to-ico");
 const png2icons = require("png2icons");
 
-const sourceIcon = path.resolve(__dirname, "./icon-1024.png");
+const sourceIcon = path.resolve(__dirname, "./icon-para-1024.png");
 // const sourceIcon = path.resolve(__dirname, "./icon-256.png");
 const outputDir = path.resolve(__dirname, "./icons");
 
@@ -17,7 +17,7 @@ async function generatePNGVariants() {
   const generatedPNGs = [];
 
   for (const size of sizes) {
-    const outputPath = path.join(outputDir, `icon-${size}.png`);
+    const outputPath = path.join(outputDir, `icon-para-${size}.png`);
 
     await sharp(sourceIcon)
       .resize(size, size)
@@ -34,11 +34,11 @@ async function generatePNGVariants() {
 async function generateICO(pngPaths) {
   const icoBuffer = await pngToIco(
     pngPaths.filter(p =>
-      [16, 32, 48, 256].some(size => p.includes(`-${size}.png`))
+      [16, 32, 48, 256].some(size => p.includes(`-para-${size}.png`))
     )
   );
 
-  const icoPath = path.join(outputDir, "icon.ico");
+  const icoPath = path.join(outputDir, "icon-para.ico");
   await fs.writeFile(icoPath, icoBuffer);
 
   console.log("✔ icon.ico généré");
@@ -46,7 +46,7 @@ async function generateICO(pngPaths) {
 
 async function generateICNS() {
   const png1024 = await fs.readFile(
-    path.join(outputDir, "icon-1024.png")
+    path.join(outputDir, "icon-para-1024.png")
     // path.join(outputDir, "icon-256.png")
   );
 
@@ -56,7 +56,7 @@ async function generateICNS() {
     0
   );
 
-  const icnsPath = path.join(outputDir, "icon.icns");
+  const icnsPath = path.join(outputDir, "icon-para.icns");
   await fs.writeFile(icnsPath, icnsBuffer);
 
   console.log("✔ icon.icns généré");

@@ -31,9 +31,9 @@ function createWindow() {
 
     // win.setIcon(path.join(__dirname, 'assets/trayicon.png'));
     if(isMacOS()) {
-        win.setIcon(nativeImage.createFromPath(path.join(__dirname, './assets/icons/icon.icns')));
+        win.setIcon(nativeImage.createFromPath(path.join(__dirname, './assets/icons/icon-para.icns')));
     } else {
-        win.setIcon(nativeImage.createFromPath(path.join(__dirname, './assets/icons/icon.ico')));
+        win.setIcon(nativeImage.createFromPath(path.join(__dirname, './assets/icons/icon-para.ico')));
     }
 
     win.loadFile(path.join(__dirname, './views/medalsRanking/medalsRanking.html'));
@@ -51,10 +51,10 @@ app.whenReady().then(() => {
     if(isMacOS()) {
         // trayIconPath = path.join(__dirname, './assets/trayTemplate.png');
         trayIconPath = path.join(__dirname, './assets/trayParaTemplate.png');
-        app.dock.setIcon(nativeImage.createFromPath(path.join(__dirname, './assets/icon-1024.png')));
+        app.dock.setIcon(nativeImage.createFromPath(path.join(__dirname, './assets/icon-para-1024.png')));
         app.dock.hide();
     } else {
-        trayIconPath = path.join(__dirname, './assets/icon.ico');
+        trayIconPath = path.join(__dirname, './assets/icon-para.ico');
     }
     
     const trayIcon = nativeImage.createFromPath(trayIconPath);
