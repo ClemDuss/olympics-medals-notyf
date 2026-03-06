@@ -4,6 +4,7 @@ const { app, BrowserWindow, ipcMain, Tray, Notification } = require('electron/ma
 const path = require('node:path');
 
 let tray;
+let lastMedalsLoaded = null;
 
 function createWindow() {
 
@@ -48,7 +49,8 @@ app.whenReady().then(() => {
     let trayIconPath = '';
 
     if(isMacOS()) {
-        trayIconPath = path.join(__dirname, './assets/trayTemplate.png');
+        // trayIconPath = path.join(__dirname, './assets/trayTemplate.png');
+        trayIconPath = path.join(__dirname, './assets/trayParaTemplate.png');
         app.dock.setIcon(nativeImage.createFromPath(path.join(__dirname, './assets/icon-1024.png')));
         app.dock.hide();
     } else {
@@ -56,7 +58,7 @@ app.whenReady().then(() => {
     }
     
     const trayIcon = nativeImage.createFromPath(trayIconPath);
-console.log(trayIcon.isEmpty()) // true
+
     trayIcon.setTemplateImage(true);
 
     // tray = new Tray(nativeImage.createFromPath(path.join(__dirname, './assets/Vector.pdf')));
@@ -90,6 +92,7 @@ console.log(trayIcon.isEmpty()) // true
     tray.setToolTip('Médailles Olympiques - Milan Cortina 2026');
     tray.setContextMenu(contextMenu);
     tray.on('click', (e) => {    
+        contextMenu.closePopup()
         showHideOrCreateWindow();
     });
     
@@ -97,7 +100,16 @@ console.log(trayIcon.isEmpty()) // true
 
     setTimeout(() => {
         showNotification();
+        console.log('Notification sent');
     }, 5000);
+
+    console.log('App is ready');
+    loadCurrentMedals();
+
+    setInterval(() => {
+        console.log('Refreshing medals data:', lastMedalsLoaded);
+        loadCurrentMedals();
+    }, 5000)//, 5 * 60 * 1000); // Refresh medals data every 5 minutes
 });
 
 app.on('window-all-closed', () => {
@@ -138,4 +150,42 @@ const showHideOrCreateWindow = () => {
 
 function showNotification () {
   new Notification({ title: 'hello', body: 'hihi' }).show()
+}
+
+
+const loadCurrentMedals = () => {
+    fetch('https://www.olympics.com/wmr-owg2026/competition/api/FRA/medals', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Medals data loaded', data);
+        let allMedals = [];
+        data.medalStandings.medalsTable.forEach(country => {
+            if(country.organisation === 'FRA'){
+                // Load medals list fro France
+
+                country.disciplines.forEach(someDiscipline => {
+                    someDiscipline.medalWinners.forEach(someMedal => {
+                        allMedals.push({
+                            discipline: someDiscipline.name,
+                            event: someMedal.eventDescription,
+                            medalType: someMedal.medalType,
+                            athlete: someMedal.competitorDisplayTvName,
+                            date: someMedal.date,
+                            disciplineCode: someDiscipline.code
+                        })
+                    })
+                })
+
+                lastMedalsLoaded = allMedals;
+            }
+        })
+    })
+    .catch(error => {
+        console.error('Error loading medals data', error);
+    });
 }

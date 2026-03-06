@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const medalsList = document.querySelector('.medals-list');
     const medalsItems = medalsList.querySelectorAll('.item');
 
-    fetch('https://www.olympics.com/wmr-owg2026/competition/api/FRA/medals', {
+    // fetch('https://www.olympics.com/wmr-owg2026/competition/api/FRA/medals', {
+    fetch('https://www.olympics.com/wmr-para-owg2026/competition/api/ENG/medals', {
         method: 'GET',
         headers: {
             'Accept': 'application/json'
@@ -19,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
             countryItem.innerHTML = `
                 <span class="rank">${country.rank}</span>
                 <span class="country">
-                    <img src="https://gstatic.olympics.com/s3/noc/oly/3x2/${country.organisation}.png" height="16" loading="lazy" alt="Drapeau - Norvège" title="Drapeau - Norvège" aria-hidden="false" class="css-kdlghf">
+                    <img src="https://gstatic.olympics.com/s3/noc/para/3x2/${country.organisation}.png" height="16" loading="lazy" alt="Drapeau - Norvège" title="Drapeau - Norvège" aria-hidden="false" class="css-kdlghf">
                     ${country.description}
                 </span>
                 <span class="gold">${totalMedals.gold}</span>
@@ -79,7 +80,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     if(lastDisciplineRendered !== medal.discipline){
                         const disciplineSeparator = document.createElement('div');
                         disciplineSeparator.classList.add('discipline-name');
-                        let disciplineIconUrl = `https://wmr-static-assets.scd.dgplatform.net/sm-cloudinary/Winter/Oly/Pictograms/SVG/Bold/${medal.disciplineCode.toLowerCase()}.svg`;
+                        // let disciplineIconUrl = `https://wmr-static-assets.scd.dgplatform.net/sm-cloudinary/Winter/Oly/Pictograms/SVG/Bold/${medal.disciplineCode.toLowerCase()}.svg`;
+                        let disciplineIconUrl = `https://wmr-static-assets.scd.dgplatform.net/sm-cloudinary/Winter/Para/Pictograms/SVG/Bold/${medal.disciplineCode.toLowerCase()}.svg`;
                         disciplineSeparator.innerHTML = `
                             <span class="icon" style="background-image: url(${disciplineIconUrl})"></span>
                             ${medal.discipline}`;
